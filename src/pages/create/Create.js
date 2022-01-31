@@ -1,6 +1,8 @@
 import { useRef, useState } from 'react';
 import './Create.css';
 import { useFetch } from '../../hooks/useFetch ';
+import { useHistory } from 'react-router-dom';
+import { useEffect } from 'react/cjs/react.development';
 
 export default function Create() {
   const initalFormData = {
@@ -13,6 +15,7 @@ export default function Create() {
   const [formData, setFormData] = useState(initalFormData);
   const [ingredient, setIngredient] = useState('');
   const ingredientRef = useRef(null);
+  const history = useHistory();
 
   const { postData, data, error } = useFetch(
     'http://localhost:3000/recipes',
@@ -46,7 +49,13 @@ export default function Create() {
     setIngredient('');
     ingredientRef.current.focus();
   };
-  console.log(formData);
+
+  useEffect(() => {
+    if (data) {
+      history.push('/');
+    }
+  }, [data, history]);
+
   return (
     <div className='create'>
       <h2 className='page-title'>Add a New Recipe</h2>

@@ -38,15 +38,17 @@
       "cookingTime": "35 minutes"
     },
     {
-      "title": "Veg Pie",
-      "method": "test",
+      "title": "Shepard's Pie",
+      "method": "Test",
       "cookingTime": "45 minutes",
       "ingredients": [
+        "carrots",
+        "onions",
+        "beef",
         "leeks",
-        "carrot",
-        "onion"
+        "dough"
       ],
-      "id": "J96k82g"
+      "id": "IptSVKD"
     }
   ]
 }
