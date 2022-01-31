@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import './Create.css';
+import { useFetch } from '../../hooks/useFetch ';
 
 export default function Create() {
   const initalFormData = {
@@ -13,6 +14,11 @@ export default function Create() {
   const [ingredient, setIngredient] = useState('');
   const ingredientRef = useRef(null);
 
+  const { postData, data, error } = useFetch(
+    'http://localhost:3000/recipes',
+    'POST'
+  );
+
   const handleFormChange = ({ target }) => {
     const { name, value } = target;
 
@@ -24,7 +30,7 @@ export default function Create() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(formData);
+    postData({ ...formData, cookingTime: formData.cookingTime + ' minutes' });
   };
 
   const handleAddIngredient = (event) => {
@@ -40,7 +46,7 @@ export default function Create() {
     setIngredient('');
     ingredientRef.current.focus();
   };
-
+  console.log(formData);
   return (
     <div className='create'>
       <h2 className='page-title'>Add a New Recipe</h2>
