@@ -2,6 +2,9 @@ import './RecipeList.css';
 import { Link } from 'react-router-dom';
 
 export default function RecipeList(props) {
+  if (!props.recipes.length) {
+    return <div className='error'>No recipes to load...</div>;
+  }
   return (
     <div className='recipe-list'>
       {props.recipes.map((recipe) => (
