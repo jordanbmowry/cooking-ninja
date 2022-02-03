@@ -1,8 +1,7 @@
 import { useRef, useState } from 'react';
 import './Create.css';
-import { useFetch } from '../../hooks/useFetch ';
 import { useHistory } from 'react-router-dom';
-import { useEffect } from 'react/cjs/react.development';
+import { projectFirestore } from '../../firebase/config';
 
 export default function Create() {
   const initalFormData = {
@@ -17,11 +16,6 @@ export default function Create() {
   const ingredientRef = useRef(null);
   const history = useHistory();
 
-  const { postData, data, error } = useFetch(
-    'http://localhost:3000/recipes',
-    'POST'
-  );
-
   const handleFormChange = ({ target }) => {
     const { name, value } = target;
 
@@ -31,9 +25,19 @@ export default function Create() {
     }));
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    postData({ ...formData, cookingTime: formData.cookingTime + ' minutes' });
+  const handleSubmit = async (event) => {
+    try {
+      event.preventDefault();
+      const doc = {
+        ...formData,
+        cookingTime: formData.cookingTime + ' minutes',
+      };
+
+      await projectFirestore.collection('recipes').add(doc);
+      history.push('/');
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleAddIngredient = (event) => {
@@ -49,12 +53,6 @@ export default function Create() {
     setIngredient('');
     ingredientRef.current.focus();
   };
-
-  useEffect(() => {
-    if (data) {
-      history.push('/');
-    }
-  }, [data, history]);
 
   return (
     <div className='create'>
